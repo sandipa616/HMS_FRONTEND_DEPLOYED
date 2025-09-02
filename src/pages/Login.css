@@ -1,0 +1,132 @@
+.login-container {
+  min-height: 110vh; 
+  background: #f5f7fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem; 
+  box-sizing: border-box;
+}
+
+.login-box {
+  background-color: #ffffff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 350px;
+  margin-top: 1rem; 
+  margin-bottom: 20rem;
+  height: 500px;
+}
+
+.login-box h2 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  text-align: center;
+  color: #333;
+}
+
+.login-box p {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #777;
+}
+
+.login-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+
+.login-box input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border 0.3s;
+  box-sizing: border-box;
+  height: 40px;
+}
+
+.login-box input:focus {
+  border-color: #007bff;
+}
+
+
+.login-password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+
+.login-password-input-wrapper input {
+  padding-right: 40px;
+}
+
+
+.login-toggle-password {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #007bff;
+  font-size: 18px;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+.login-toggle-password:hover {
+  color: #0056b3;
+}
+
+.login-box button[type="login-submit"] {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.login-box button[type="login-submit"]:hover {
+  background-color: #0056b3;
+}
+
+.login-footer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.login-footer p {
+  margin-top: 2rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.login-footer p a:hover {
+  color: #f9252c;
+  text-decoration: underline;
+}
+
+@media (max-width: 500px) {
+  .login-box {
+    padding: 1.5rem;
+  }
+
+  .login-box h2 {
+    font-size: 1.5rem;
+  }
+
+  .login-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

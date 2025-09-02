@@ -1,0 +1,140 @@
+.register-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: #f7f8fa;
+}
+
+.register-box {
+  background-color: #fff;
+  padding: 2rem;
+  width: 100%;
+  max-width:450px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.register-box h2 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.register-box p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.register-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.register-row input,
+.register-row select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.register-password-input {
+  position: relative;
+  width: 100%;
+}
+
+.register-password-input input {
+  width: 100%;
+  padding: 10px;
+  padding-right: 40px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.register-password-input span {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+}
+
+.register-date-input input,
+.register-gender-input select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 600px) {
+  .register-row {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .register-row > * {
+    width: 48%;
+  }
+}
+
+.register-redirect {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-top: 1rem;
+  color: #333;
+  text-align: center;
+}
+
+.register-redirect a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register-redirect a:hover {
+  text-decoration: underline;
+}
+
+
+.register-submit {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.register-submit button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.register-submit button:hover {
+  background-color: #0056b3;
+}

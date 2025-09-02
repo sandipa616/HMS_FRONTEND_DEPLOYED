@@ -1,0 +1,82 @@
+.contact-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color:#afababb8;
+  margin-top: 30px;
+}
+
+.contact-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.contact-info {
+  background-color: #f4f4f4;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  color: black;
+}
+
+.contact-info p {
+  font-size: 1rem;
+  margin: 10px 0;
+}
+
+.map-wrapper {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.map-title {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.map-container {
+  width: 100%;
+  max-width: 500px;
+  height: 250px;
+  margin: 0 auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+  .contact-title {
+    font-size: 1.5rem;
+  }
+
+  .map-title {
+    font-size: 1rem;
+  }
+
+  .contact-info p {
+    font-size: 0.95rem;
+  }
+
+  .map-container {
+    height: 200px;
+  }
+}

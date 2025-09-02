@@ -1,0 +1,93 @@
+.contact-form-container {
+  max-width: 1000px;
+  width: 90%; 
+  margin: 4rem auto;
+  padding: 2rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.1); 
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px); 
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #333;
+}
+
+.contact-form-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #f1f1f1;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 600px) {
+  form div {
+    flex-direction: row;
+  }
+}
+
+input, textarea {
+  flex: 1;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  width: 100%; /* Ensures full width within flex container */
+}
+
+input:focus, textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+textarea {
+  resize: vertical;
+  width: 100%; /* Full width on all screens */
+  min-height: 120px;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 480px) {
+  .contact-form-container {
+    padding: 1rem;
+  }
+
+  .contact-form-container h2 {
+    font-size: 1.5rem;
+  }
+
+  input, textarea {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+
+  button[type="submit"] {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.5rem;
+  }
+}

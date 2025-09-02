@@ -150,7 +150,6 @@ const Register = () => {
           <div className="register-row">
             <input
               type="text"
-              onFocus={(e) => (e.target.type = "date")}
               placeholder="Date of Birth"
               value={dob}
               onChange={(e) => setDob(e.target.value)}

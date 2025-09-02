@@ -84,8 +84,9 @@ const Register = () => {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               required
-            />{" "}
+            />
           </div>
+
           <div className="register-row">
             <input
               type="text"
@@ -103,8 +104,9 @@ const Register = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-            />{" "}
+            />
           </div>
+
           <div className="register-row">
             <input
               type="tel"
@@ -137,9 +139,7 @@ const Register = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
-              <span
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              >
+              <span onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                 {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
             </div>
@@ -147,10 +147,11 @@ const Register = () => {
 
           <div className="register-row">
             <input
-              type="text"
+              type={dob ? "date" : "text"}
               placeholder="Date of Birth"
               value={dob}
               onFocus={(e) => (e.target.type = "date")}
+              onBlur={(e) => { if (!dob) e.target.type = "text"; }}
               onChange={(e) => setDob(e.target.value)}
               required
             />

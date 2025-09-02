@@ -148,14 +148,17 @@ const Register = () => {
           </div>
 
           <div className="register-row">
-            <input
-              type="text"
-              placeholder="Date of Birth"
-              value={dob}
-              onChange={(e) => setDob(e.target.value)}
-              onFocus={(e) => e.currentTarget.showPicker?.()}
-              required
-            />
+           <input
+            type={dob ? "date" : "text"}
+            placeholder="Date of Birth"
+            value={dob}
+            onChange={(e) => setDob(e.target.value)}
+            onFocus={(e) => (e.target.type = "date")}
+            onBlur={(e) => {
+              if (!dob) e.target.type = "text";
+            }}
+            required
+          />
           </div>
 
           <div className="register-row">

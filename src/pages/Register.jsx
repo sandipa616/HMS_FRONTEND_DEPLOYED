@@ -5,7 +5,7 @@ import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Register.css";
-import "react-datepicker/dist/react-datepicker.css";
+
 
 const Register = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);

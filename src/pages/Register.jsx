@@ -5,6 +5,8 @@ import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Register.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Register = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -148,17 +150,16 @@ const Register = () => {
           </div>
 
           <div className="register-row">
-           <input
-            type={dob ? "date" : "text"}
-            placeholder="Date of Birth"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-            onFocus={(e) => (e.target.type = "date")}
-            onBlur={(e) => {
-              if (!dob) e.target.type = "text";
-            }}
-            required
-          />
+            <DatePicker
+              selected={dob ? new Date(dob) : null}
+              onChange={(date) =>
+                setDob(date ? date.toISOString().split("T")[0] : "")
+              }
+              dateFormat="yyyy-MM-dd"
+              placeholderText="Date of Birth"
+              className="register-input"
+              required
+            />
           </div>
 
           <div className="register-row">

@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "./AppointmentForm.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const AppointmentForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -132,15 +134,14 @@ const AppointmentForm = () => {
         </div>
 
         <div>
-          <input
-            type={dob ? "date" : "text"}
-            placeholder="Date of Birth"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-            onFocus={(e) => (e.target.type = "date")}
-            onBlur={(e) => {
-              if (!dob) e.target.type = "text";
-            }}
+          <DatePicker
+            selected={dob ? new Date(dob) : null}
+            onChange={(date) =>
+              setDob(date ? date.toISOString().split("T")[0] : "")
+            }
+            dateFormat="yyyy-MM-dd"
+            placeholderText="Date of Birth"
+            className="appointment-input"
             required
           />
 
@@ -156,15 +157,14 @@ const AppointmentForm = () => {
         </div>
 
         <div>
-          <input
-            type={appointmentDate ? "date" : "text"}
-            placeholder="Appointment Date"
-            value={appointmentDate}
-            onChange={(e) => setAppointmentDate(e.target.value)}
-            onFocus={(e) => (e.target.type = "date")}
-            onBlur={(e) => {
-              if (!appointmentDate) e.target.type = "text";
-            }}
+          <DatePicker
+            selected={appointmentDate ? new Date(appointmentDate) : null}
+            onChange={(date) =>
+              setAppointmentDate(date ? date.toISOString().split("T")[0] : "")
+            }
+            dateFormat="yyyy-MM-dd"
+            placeholderText="Appointment Date"
+            className="appointment-input"
             required
           />
 
@@ -260,7 +260,6 @@ const AppointmentForm = () => {
         </div>
       </form>
     </div>
-  
   );
 };
 

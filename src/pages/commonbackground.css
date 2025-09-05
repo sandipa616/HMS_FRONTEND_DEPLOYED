@@ -1,7 +1,6 @@
 .commonbackground {
   overflow-x: hidden;
-  background-image: linear-gradient(#121212, rgb(10 4 4 / 68%)),
-    url(/background.jpg);
+  background-image: linear-gradient(#ffffff9e, #0a0404ad), url(/background.jpg);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

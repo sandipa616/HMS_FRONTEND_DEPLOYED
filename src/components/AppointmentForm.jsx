@@ -33,6 +33,8 @@ const AppointmentForm = () => {
 
   const [doctors, setDoctors] = useState([]);
 
+  const nameRegex = /^[A-Za-z ]+$/; // Only letters and spaces
+
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
@@ -50,6 +52,22 @@ const AppointmentForm = () => {
 
   const handleAppointment = async (e) => {
     e.preventDefault();
+
+    // Frontend name validation
+    if (!nameRegex.test(firstName) || firstName.length < 3) {
+      toast.error(
+        "First Name must be at least 3 characters and contain only letters."
+      );
+      return;
+    }
+
+    if (!nameRegex.test(lastName) || lastName.length < 3) {
+      toast.error(
+        "Last Name must be at least 3 characters and contain only letters."
+      );
+      return;
+    }
+
     try {
       const hasVisitedBool = Boolean(hasVisited);
       const { data } = await axios.post(
@@ -143,7 +161,6 @@ const AppointmentForm = () => {
             }}
             required
           />
-
           <select
             value={gender}
             onChange={(e) => setGender(e.target.value)}
@@ -167,7 +184,6 @@ const AppointmentForm = () => {
             }}
             required
           />
-
           <select
             value={department}
             onChange={(e) => {
@@ -214,14 +230,6 @@ const AppointmentForm = () => {
                 </option>
               ))}
           </select>
-
-          <input
-            type="text"
-            placeholder="Your Concern (optional)"
-            value=""
-            readOnly
-            style={{ visibility: "hidden" }}
-          />
         </div>
 
         <textarea
@@ -253,6 +261,7 @@ const AppointmentForm = () => {
             </label>
           </div>
         </div>
+
         <div className="appointment-button">
           <button type="submit" style={{ marginTop: "20px" }}>
             GET APPOINTMENT
@@ -260,7 +269,6 @@ const AppointmentForm = () => {
         </div>
       </form>
     </div>
-  
   );
 };
 

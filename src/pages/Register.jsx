@@ -6,7 +6,6 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Register.css";
 
-
 const Register = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
@@ -26,6 +25,34 @@ const Register = () => {
   const handleRegistration = async (e) => {
     e.preventDefault();
 
+    const nameRegex = /^[A-Za-z ]+$/;
+    const phoneRegex = /^\d{10}$/;
+
+    // 🔹 First name validation
+    if (!nameRegex.test(firstName) || firstName.length < 3) {
+      toast.error("First Name must be at least 3 characters and only letters.");
+      return;
+    }
+
+    // 🔹 Last name validation
+    if (!nameRegex.test(lastName) || lastName.length < 3) {
+      toast.error("Last Name must be at least 3 characters and only letters.");
+      return;
+    }
+
+    // 🔹 Phone validation
+    if (!phoneRegex.test(phone)) {
+      toast.error("Phone number must be exactly 10 digits.");
+      return;
+    }
+
+    // 🔹 Password validation
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters long.");
+      return;
+    }
+
+    // 🔹 Password match
     if (password !== confirmPassword) {
       toast.error("Passwords do not match!");
       return;
@@ -149,17 +176,17 @@ const Register = () => {
           </div>
 
           <div className="register-row">
-           <input
-            type={dob ? "date" : "text"}
-            placeholder="Date of Birth"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-            onFocus={(e) => (e.target.type = "date")}
-            onBlur={(e) => {
-              if (!dob) e.target.type = "text";
-            }}
-            required
-          />
+            <input
+              type={dob ? "date" : "text"}
+              placeholder="Date of Birth"
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
+              onFocus={(e) => (e.target.type = "date")}
+              onBlur={(e) => {
+                if (!dob) e.target.type = "text";
+              }}
+              required
+            />
           </div>
 
           <div className="register-row">

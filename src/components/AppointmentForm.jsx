@@ -74,6 +74,8 @@ const AppointmentForm = ({ loggedInUser }) => {
           department,
           doctor_firstName: doctorFirstName,
           doctor_lastName: doctorLastName,
+          address,
+          hasVisited,
         },
         {
           withCredentials: true,

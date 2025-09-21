@@ -119,12 +119,15 @@ const AppointmentForm = ({ loggedInUser }) => {
 
         <div>
           <input
-            type="date"
+            type="text" // start as text to show placeholder
             placeholder="Appointment Date"
             value={appointmentDate}
             onChange={(e) => setAppointmentDate(e.target.value)}
+            onFocus={(e) => (e.target.type = "date")} // change to date picker on click
+            onBlur={(e) => !appointmentDate && (e.target.type = "text")} // revert if empty
             required
           />
+
           <select
             value={department}
             onChange={(e) => {
@@ -144,7 +147,10 @@ const AppointmentForm = ({ loggedInUser }) => {
 
         <div>
           <select
-            value={JSON.stringify({ firstName: doctorFirstName, lastName: doctorLastName })}
+            value={JSON.stringify({
+              firstName: doctorFirstName,
+              lastName: doctorLastName,
+            })}
             onChange={(e) => {
               const { firstName, lastName } = JSON.parse(e.target.value);
               setDoctorFirstName(firstName);
@@ -159,7 +165,10 @@ const AppointmentForm = ({ loggedInUser }) => {
               .map((doctor, index) => (
                 <option
                   key={index}
-                  value={JSON.stringify({ firstName: doctor.firstName, lastName: doctor.lastName })}
+                  value={JSON.stringify({
+                    firstName: doctor.firstName,
+                    lastName: doctor.lastName,
+                  })}
                 >
                   {doctor.firstName} {doctor.lastName}
                 </option>

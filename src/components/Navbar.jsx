@@ -8,21 +8,22 @@ import { Context } from "../main";
 import './Navbar.css';
 const Navbar = () => {
   const [show, setShow] = useState(false);
-  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  const { user,setUser,isAuthenticated, setIsAuthenticated } = useContext(Context);
 
   const handleLogout = async () => {
-    await axios
-      .get("https://hms-backend-deployed-f9l0.onrender.com/api/v1/user/patient/logout", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        toast.success(res.data.message);
-        setIsAuthenticated(false);
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
-  };
+  try {
+    const res = await axios.get(
+      "https://hms-backend-deployed-f9l0.onrender.com/api/v1/user/patient/logout",
+      { withCredentials: true }
+    );
+    toast.success(res.data.message);
+    setIsAuthenticated(false); // update auth state
+    setUser(null);             // clear user data
+    // <-- REMOVE navigate("/login")
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Something went wrong");
+  }
+};
 
   const navigateTo = useNavigate();
 

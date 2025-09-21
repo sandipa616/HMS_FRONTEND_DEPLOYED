@@ -1,9 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "./AppointmentForm.css";
 
 const AppointmentForm = ({ loggedInUser }) => {
+  const navigate = useNavigate();
+
   // Prefilled patient details
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -104,12 +107,16 @@ const AppointmentForm = ({ loggedInUser }) => {
 
       toast.success(data.message);
 
-      // Reset only appointment-related fields
+      // Reset all appointment fields
       setAppointmentDate("");
       setDepartment("Pediatrics");
       setDoctorFirstName("");
       setDoctorLastName("");
       setHasVisited(false);
+      setAddress("");
+
+      // Redirect to homepage
+      navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
     }
@@ -121,18 +128,8 @@ const AppointmentForm = ({ loggedInUser }) => {
       <form onSubmit={handleAppointment}>
         {/* Patient Details */}
         <div>
-          <input
-            type="text"
-            value={firstName}
-            placeholder="First Name"
-            readOnly
-          />
-          <input
-            type="text"
-            value={lastName}
-            placeholder="Last Name"
-            readOnly
-          />
+          <input type="text" value={firstName} placeholder="First Name" readOnly />
+          <input type="text" value={lastName} placeholder="Last Name" readOnly />
         </div>
 
         <div>
@@ -177,19 +174,14 @@ const AppointmentForm = ({ loggedInUser }) => {
             required
           >
             {departmentsArray.map((dept, index) => (
-              <option key={index} value={dept}>
-                {dept}
-              </option>
+              <option key={index} value={dept}>{dept}</option>
             ))}
           </select>
         </div>
 
         <div>
           <select
-            value={JSON.stringify({
-              firstName: doctorFirstName,
-              lastName: doctorLastName,
-            })}
+            value={JSON.stringify({ firstName: doctorFirstName, lastName: doctorLastName })}
             onChange={(e) => {
               const { firstName, lastName } = JSON.parse(e.target.value);
               setDoctorFirstName(firstName);
@@ -204,10 +196,7 @@ const AppointmentForm = ({ loggedInUser }) => {
               .map((doctor, index) => (
                 <option
                   key={index}
-                  value={JSON.stringify({
-                    firstName: doctor.firstName,
-                    lastName: doctor.lastName,
-                  })}
+                  value={JSON.stringify({ firstName: doctor.firstName, lastName: doctor.lastName })}
                 >
                   {doctor.firstName} {doctor.lastName}
                 </option>
@@ -225,15 +214,7 @@ const AppointmentForm = ({ loggedInUser }) => {
         />
 
         {/* Has Visited Checkbox */}
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            marginTop: "10px",
-          }}
-        >
+        <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", alignItems: "center", marginTop: "10px" }}>
           <div className="appointment-checkbox-row">
             <label htmlFor="hasVisited">
               Have you visited before?
@@ -248,9 +229,7 @@ const AppointmentForm = ({ loggedInUser }) => {
         </div>
 
         <div className="appointment-button">
-          <button type="submit" style={{ marginTop: "20px" }}>
-            GET APPOINTMENT
-          </button>
+          <button type="submit" style={{ marginTop: "20px" }}>GET APPOINTMENT</button>
         </div>
       </form>
     </div>

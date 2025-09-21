@@ -4,17 +4,20 @@ import { toast } from "react-toastify";
 import "./AppointmentForm.css";
 
 const AppointmentForm = ({ loggedInUser }) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [dob, setDob] = useState("");
-  const [gender, setGender] = useState("");
+  // ✅ Initialize state with loggedInUser values to avoid flicker
+  const [firstName] = useState(loggedInUser?.firstName || "");
+  const [lastName] = useState(loggedInUser?.lastName || "");
+  const [email] = useState(loggedInUser?.email || "");
+  const [phone] = useState(loggedInUser?.phone || "");
+  const [dob] = useState(loggedInUser?.dob ? loggedInUser.dob.slice(0, 10) : "");
+  const [gender] = useState(loggedInUser?.gender || "");
+  const [address, setAddress] = useState(loggedInUser?.address || "");
+
+  // Editable fields
   const [appointmentDate, setAppointmentDate] = useState("");
   const [department, setDepartment] = useState("Pediatrics");
   const [doctorFirstName, setDoctorFirstName] = useState("");
   const [doctorLastName, setDoctorLastName] = useState("");
-  const [address, setAddress] = useState("");
   const [hasVisited, setHasVisited] = useState(false);
   const [doctors, setDoctors] = useState([]);
 
@@ -32,18 +35,8 @@ const AppointmentForm = ({ loggedInUser }) => {
     "Odontology",
   ];
 
-  // Pre-fill fields and fetch doctors
+  // ✅ Only fetch doctors in useEffect
   useEffect(() => {
-    if (loggedInUser) {
-      setFirstName(loggedInUser.firstName || "");
-      setLastName(loggedInUser.lastName || "");
-      setEmail(loggedInUser.email || "");
-      setPhone(loggedInUser.phone || "");
-      setDob(loggedInUser.dob || "");
-      setGender(loggedInUser.gender || "");
-      setAddress(loggedInUser.address || "");
-    }
-
     const fetchDoctors = async () => {
       try {
         const { data } = await axios.get(
@@ -56,7 +49,7 @@ const AppointmentForm = ({ loggedInUser }) => {
       }
     };
     fetchDoctors();
-  }, [loggedInUser]);
+  }, []);
 
   const handleAppointment = async (e) => {
     e.preventDefault();
@@ -82,6 +75,7 @@ const AppointmentForm = ({ loggedInUser }) => {
       setDepartment("Pediatrics");
       setDoctorFirstName("");
       setDoctorLastName("");
+      setHasVisited(false);
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
     }

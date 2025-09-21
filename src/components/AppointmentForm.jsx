@@ -11,7 +11,7 @@ const AppointmentForm = ({ loggedInUser }) => {
   const [phone, setPhone] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(""); // <-- editable if empty
 
   // Editable fields
   const [appointmentDate, setAppointmentDate] = useState("");
@@ -44,7 +44,7 @@ const AppointmentForm = ({ loggedInUser }) => {
       setPhone(loggedInUser.phone || "");
       setDob(loggedInUser.dob ? loggedInUser.dob.slice(0, 10) : "");
       setGender(loggedInUser.gender || "");
-      setAddress(loggedInUser.address || "");
+      setAddress(loggedInUser.address || ""); // <-- if empty, user can fill
     }
   }, [loggedInUser]);
 
@@ -67,6 +67,11 @@ const AppointmentForm = ({ loggedInUser }) => {
   const handleAppointment = async (e) => {
     e.preventDefault();
     try {
+      if (!address) {
+        toast.error("Address is required!");
+        return;
+      }
+
       const { data } = await axios.post(
         "https://hms-backend-deployed-f9l0.onrender.com/api/v1/appointment/post",
         {
@@ -74,7 +79,7 @@ const AppointmentForm = ({ loggedInUser }) => {
           department,
           doctor_firstName: doctorFirstName,
           doctor_lastName: doctorLastName,
-          address,
+          address, // send to backend to avoid missing path error
           hasVisited,
         },
         {
@@ -125,8 +130,8 @@ const AppointmentForm = ({ loggedInUser }) => {
             placeholder="Appointment Date"
             value={appointmentDate}
             onChange={(e) => setAppointmentDate(e.target.value)}
-            onFocus={(e) => (e.target.type = "date")} // change to date picker on click
-            onBlur={(e) => !appointmentDate && (e.target.type = "text")} // revert if empty
+            onFocus={(e) => (e.target.type = "date")} // show date picker
+            onBlur={(e) => !appointmentDate && (e.target.type = "text")}
             required
           />
 
@@ -178,11 +183,13 @@ const AppointmentForm = ({ loggedInUser }) => {
           </select>
         </div>
 
+        {/* Editable address field */}
         <textarea
-          rows="5"
+          rows="3"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          placeholder="Address"
+          placeholder="Address (required)"
+          required
         />
 
         <div

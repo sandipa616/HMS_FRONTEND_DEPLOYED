@@ -4,16 +4,16 @@ import { toast } from "react-toastify";
 import "./AppointmentForm.css";
 
 const AppointmentForm = ({ loggedInUser }) => {
-  // Patient details (prefilled)
+  // Prefilled patient details
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
-  const [address, setAddress] = useState(""); // <-- editable if empty
+  const [address, setAddress] = useState("");
 
-  // Editable fields
+  // Editable appointment fields
   const [appointmentDate, setAppointmentDate] = useState("");
   const [department, setDepartment] = useState("Pediatrics");
   const [doctorFirstName, setDoctorFirstName] = useState("");
@@ -44,7 +44,21 @@ const AppointmentForm = ({ loggedInUser }) => {
       setPhone(loggedInUser.phone || "");
       setDob(loggedInUser.dob ? loggedInUser.dob.slice(0, 10) : "");
       setGender(loggedInUser.gender || "");
-      setAddress(loggedInUser.address || ""); // <-- if empty, user can fill
+      setAddress(loggedInUser.address || "");
+    } else {
+      // User logged out: reset all fields
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPhone("");
+      setDob("");
+      setGender("");
+      setAddress("");
+      setAppointmentDate("");
+      setDepartment("Pediatrics");
+      setDoctorFirstName("");
+      setDoctorLastName("");
+      setHasVisited(false);
     }
   }, [loggedInUser]);
 
@@ -66,12 +80,12 @@ const AppointmentForm = ({ loggedInUser }) => {
 
   const handleAppointment = async (e) => {
     e.preventDefault();
-    try {
-      if (!address) {
-        toast.error("Address is required!");
-        return;
-      }
+    if (!address) {
+      toast.error("Address is required!");
+      return;
+    }
 
+    try {
       const { data } = await axios.post(
         "https://hms-backend-deployed-f9l0.onrender.com/api/v1/appointment/post",
         {
@@ -79,7 +93,7 @@ const AppointmentForm = ({ loggedInUser }) => {
           department,
           doctor_firstName: doctorFirstName,
           doctor_lastName: doctorLastName,
-          address, // send to backend to avoid missing path error
+          address,
           hasVisited,
         },
         {
@@ -90,7 +104,7 @@ const AppointmentForm = ({ loggedInUser }) => {
 
       toast.success(data.message);
 
-      // Reset only editable fields
+      // Reset only appointment-related fields
       setAppointmentDate("");
       setDepartment("Pediatrics");
       setDoctorFirstName("");
@@ -105,18 +119,36 @@ const AppointmentForm = ({ loggedInUser }) => {
     <div className="appointment-container appointment-form-component appointment-form">
       <h2>Appointment</h2>
       <form onSubmit={handleAppointment}>
+        {/* Patient Details */}
         <div>
-          <input type="text" value={firstName} readOnly />
-          <input type="text" value={lastName} readOnly />
+          <input
+            type="text"
+            value={firstName}
+            placeholder="First Name"
+            readOnly
+          />
+          <input
+            type="text"
+            value={lastName}
+            placeholder="Last Name"
+            readOnly
+          />
         </div>
 
         <div>
-          <input type="email" value={email} readOnly />
-          <input type="tel" value={phone} readOnly />
+          <input type="email" value={email} placeholder="Email" readOnly />
+          <input type="tel" value={phone} placeholder="Phone" readOnly />
         </div>
 
         <div>
-          <input type="date" value={dob} readOnly />
+          <input
+            type={dob ? "date" : "text"}
+            value={dob}
+            placeholder="Date of Birth"
+            readOnly
+            onFocus={(e) => (e.target.type = "date")}
+            onBlur={(e) => !dob && (e.target.type = "text")}
+          />
           <select value={gender} disabled>
             <option value="">Select Gender</option>
             <option value="Male">Male</option>
@@ -124,17 +156,17 @@ const AppointmentForm = ({ loggedInUser }) => {
           </select>
         </div>
 
+        {/* Appointment Details */}
         <div>
           <input
-            type="text" // start as text to show placeholder
+            type={appointmentDate ? "date" : "text"}
             placeholder="Appointment Date"
             value={appointmentDate}
             onChange={(e) => setAppointmentDate(e.target.value)}
-            onFocus={(e) => (e.target.type = "date")} // show date picker
+            onFocus={(e) => (e.target.type = "date")}
             onBlur={(e) => !appointmentDate && (e.target.type = "text")}
             required
           />
-
           <select
             value={department}
             onChange={(e) => {
@@ -183,15 +215,16 @@ const AppointmentForm = ({ loggedInUser }) => {
           </select>
         </div>
 
-        {/* Editable address field */}
+        {/* Address */}
         <textarea
           rows="3"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          placeholder="Address (required)"
+          placeholder="Address"
           required
         />
 
+        {/* Has Visited Checkbox */}
         <div
           style={{
             display: "flex",

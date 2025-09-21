@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "./AppointmentForm.css";
 
-const AppointmentForm = () => {
+const AppointmentForm = ({ loggedInUser }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,6 +16,7 @@ const AppointmentForm = () => {
   const [doctorLastName, setDoctorLastName] = useState("");
   const [address, setAddress] = useState("");
   const [hasVisited, setHasVisited] = useState(false);
+  const [doctors, setDoctors] = useState([]);
 
   const departmentsArray = [
     "Pediatrics",
@@ -31,11 +32,18 @@ const AppointmentForm = () => {
     "Odontology",
   ];
 
-  const [doctors, setDoctors] = useState([]);
-
-  const nameRegex = /^[A-Za-z ]+$/; // Only letters and spaces
-
+  // Pre-fill fields and fetch doctors
   useEffect(() => {
+    if (loggedInUser) {
+      setFirstName(loggedInUser.firstName || "");
+      setLastName(loggedInUser.lastName || "");
+      setEmail(loggedInUser.email || "");
+      setPhone(loggedInUser.phone || "");
+      setDob(loggedInUser.dob || "");
+      setGender(loggedInUser.gender || "");
+      setAddress(loggedInUser.address || "");
+    }
+
     const fetchDoctors = async () => {
       try {
         const { data } = await axios.get(
@@ -48,64 +56,32 @@ const AppointmentForm = () => {
       }
     };
     fetchDoctors();
-  }, []);
+  }, [loggedInUser]);
 
   const handleAppointment = async (e) => {
     e.preventDefault();
-
-    // Frontend name validation
-    if (!nameRegex.test(firstName) || firstName.length < 3) {
-      toast.error(
-        "First Name must be at least 3 characters and contain only letters."
-      );
-      return;
-    }
-
-    if (!nameRegex.test(lastName) || lastName.length < 3) {
-      toast.error(
-        "Last Name must be at least 3 characters and contain only letters."
-      );
-      return;
-    }
-
     try {
-      const hasVisitedBool = Boolean(hasVisited);
       const { data } = await axios.post(
         "https://hms-backend-deployed-f9l0.onrender.com/api/v1/appointment/post",
         {
-          firstName,
-          lastName,
-          email,
-          phone,
-          dob,
-          gender,
           appointment_date: appointmentDate,
           department,
           doctor_firstName: doctorFirstName,
           doctor_lastName: doctorLastName,
-          hasVisited: hasVisitedBool,
-          address,
         },
         {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         }
       );
+
       toast.success(data.message);
 
-      // Clear form
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setPhone("");
-      setDob("");
-      setGender("");
+      // Reset only editable fields
       setAppointmentDate("");
       setDepartment("Pediatrics");
       setDoctorFirstName("");
       setDoctorLastName("");
-      setHasVisited(false);
-      setAddress("");
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
     }
@@ -116,56 +92,18 @@ const AppointmentForm = () => {
       <h2>Appointment</h2>
       <form onSubmit={handleAppointment}>
         <div>
-          <input
-            type="text"
-            placeholder="First Name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
+          <input type="text" value={firstName} readOnly />
+          <input type="text" value={lastName} readOnly />
         </div>
 
         <div>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="tel"
-            placeholder="Mobile Number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-          />
+          <input type="email" value={email} readOnly />
+          <input type="tel" value={phone} readOnly />
         </div>
 
         <div>
-          <input
-            type={dob ? "date" : "text"}
-            placeholder="Date of Birth"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-            onFocus={(e) => (e.target.type = "date")}
-            onBlur={(e) => {
-              if (!dob) e.target.type = "text";
-            }}
-            required
-          />
-          <select
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-            required
-          >
+          <input type="date" value={dob} readOnly />
+          <select value={gender} disabled>
             <option value="">Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -174,14 +112,10 @@ const AppointmentForm = () => {
 
         <div>
           <input
-            type={appointmentDate ? "date" : "text"}
+            type="date"
             placeholder="Appointment Date"
             value={appointmentDate}
             onChange={(e) => setAppointmentDate(e.target.value)}
-            onFocus={(e) => (e.target.type = "date")}
-            onBlur={(e) => {
-              if (!appointmentDate) e.target.type = "text";
-            }}
             required
           />
           <select
@@ -203,10 +137,7 @@ const AppointmentForm = () => {
 
         <div>
           <select
-            value={JSON.stringify({
-              firstName: doctorFirstName,
-              lastName: doctorLastName,
-            })}
+            value={JSON.stringify({ firstName: doctorFirstName, lastName: doctorLastName })}
             onChange={(e) => {
               const { firstName, lastName } = JSON.parse(e.target.value);
               setDoctorFirstName(firstName);
@@ -221,10 +152,7 @@ const AppointmentForm = () => {
               .map((doctor, index) => (
                 <option
                   key={index}
-                  value={JSON.stringify({
-                    firstName: doctor.firstName,
-                    lastName: doctor.lastName,
-                  })}
+                  value={JSON.stringify({ firstName: doctor.firstName, lastName: doctor.lastName })}
                 >
                   {doctor.firstName} {doctor.lastName}
                 </option>
@@ -237,7 +165,6 @@ const AppointmentForm = () => {
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           placeholder="Address"
-          required
         />
 
         <div

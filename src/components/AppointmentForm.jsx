@@ -4,14 +4,14 @@ import { toast } from "react-toastify";
 import "./AppointmentForm.css";
 
 const AppointmentForm = ({ loggedInUser }) => {
-  // ✅ Initialize state with loggedInUser values to avoid flicker
-  const [firstName] = useState(loggedInUser?.firstName || "");
-  const [lastName] = useState(loggedInUser?.lastName || "");
-  const [email] = useState(loggedInUser?.email || "");
-  const [phone] = useState(loggedInUser?.phone || "");
-  const [dob] = useState(loggedInUser?.dob ? loggedInUser.dob.slice(0, 10) : "");
-  const [gender] = useState(loggedInUser?.gender || "");
-  const [address, setAddress] = useState(loggedInUser?.address || "");
+  // Patient details (prefilled)
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [dob, setDob] = useState("");
+  const [gender, setGender] = useState("");
+  const [address, setAddress] = useState("");
 
   // Editable fields
   const [appointmentDate, setAppointmentDate] = useState("");
@@ -35,7 +35,20 @@ const AppointmentForm = ({ loggedInUser }) => {
     "Odontology",
   ];
 
-  // ✅ Only fetch doctors in useEffect
+  // Prefill patient details whenever loggedInUser changes
+  useEffect(() => {
+    if (loggedInUser) {
+      setFirstName(loggedInUser.firstName || "");
+      setLastName(loggedInUser.lastName || "");
+      setEmail(loggedInUser.email || "");
+      setPhone(loggedInUser.phone || "");
+      setDob(loggedInUser.dob ? loggedInUser.dob.slice(0, 10) : "");
+      setGender(loggedInUser.gender || "");
+      setAddress(loggedInUser.address || "");
+    }
+  }, [loggedInUser]);
+
+  // Fetch doctors
   useEffect(() => {
     const fetchDoctors = async () => {
       try {

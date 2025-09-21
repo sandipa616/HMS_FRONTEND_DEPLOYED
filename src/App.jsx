@@ -14,7 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/Navbar';
 
 const App = () => {
-  const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
+  const {  user,setUser ,isAuthenticated, setIsAuthenticated } = useContext(Context);
 
   useEffect(() => {
     const fetchUser = async () => {

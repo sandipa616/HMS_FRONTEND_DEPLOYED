@@ -79,8 +79,16 @@ const Register = () => {
       );
 
       toast.success(data.message);
-      setIsAuthenticated(true);
-      navigateTo("/");
+
+const response = await axios.get(
+  "https://hms-backend-deployed-f9l0.onrender.com/api/v1/user/patient/me",
+  { withCredentials: true }
+);
+
+setIsAuthenticated(true);
+setUser(response.data.user);
+
+navigateTo("/");
 
       // Clear form
       setFirstName("");
